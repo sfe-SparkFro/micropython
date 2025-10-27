@@ -26,6 +26,12 @@
 #include <stdio.h>
 #include <errno.h>
 #include <sys/stat.h>
+#include <sys/time.h>
+
+int _open(const char *name, int flags, int mode) {
+    errno = ENOSYS;
+    return -1;
+}
 
 int _write(int handle, char *buffer, int size) {
     errno = ENOSYS;
@@ -98,4 +104,17 @@ caddr_t _sbrk(int incr)
 void _fini(void) __attribute__((weak));
 void _fini(void) {
     // Empty function - no cleanup needed
+}
+
+int _unlink(const char *name) {
+    errno = ENOSYS;
+    return -1;
+}
+
+int _gettimeofday(struct timeval *tv, void *tzvp) {
+  if (tv) {
+    tv->tv_sec = 0;     // or read from RTC
+    tv->tv_usec = 0;
+  }
+  return 0;
 }

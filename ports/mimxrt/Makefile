@@ -450,7 +450,7 @@ LIBSTDCPP_FILE_NAME = "$(shell $(CXX) $(CXXFLAGS) -print-file-name=libstdc++.a)"
 LDFLAGS += -L"$(shell dirname $(LIBSTDCPP_FILE_NAME))"
 LIBSTDC_FILE_NAME = "$(shell $(CXX) $(CXXFLAGS) -print-file-name=libc.a)"
 LDFLAGS +=  -L"$(shell dirname $(LIBSTDC_FILE_NAME))" 
-LIBS += -lstdc++ $(LIBSTDC_FILE_NAME) 
+LIBS += $(LIBS_USERMOD) -lstdc++ $(LIBSTDC_FILE_NAME) 
 endif
 
 # =============================================================================

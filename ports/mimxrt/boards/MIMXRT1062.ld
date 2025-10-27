@@ -19,15 +19,15 @@ ivt_size            = 0x00001000;
 interrupts_start    = flash_start + 0x0000C000;
 interrupts_size     = 0x00000400;
 text_start          = flash_start + 0x0000C400;
-vfs_start           = flash_start + 0x00100000;
+vfs_start           = flash_start + 0x00700000;
 text_size           = ((vfs_start) - (text_start));
 vfs_size            = ((flash_end) - (vfs_start));
 itcm_start          = 0x00000000;
-itcm_size           = 0x00020000;
+itcm_size           = 0x00040000;
 dtcm_start          = 0x20000000;
-dtcm_size           = 0x00020000;
+dtcm_size           = 0x00040000;
 ocrm_start          = 0x20200000;
-ocrm_size           = 0x000C0000;
+ocrm_size           = 0x00080000;
 
 #if MICROPY_HW_SDRAM_AVAIL
 sdram_start         = 0x80000000;
