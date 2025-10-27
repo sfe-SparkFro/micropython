@@ -226,6 +226,7 @@ SRC_C += \
 	systick.c \
 	ticks.c \
 	usbd.c \
+	nosys_stubs.c
 
 SHARED_SRC_C += \
 	shared/libc/printf.c \
@@ -386,7 +387,8 @@ CFLAGS += \
 	-Wdouble-promotion \
 	-Werror \
 	-Wfloat-conversion \
-	-Wno-error=unused-parameter
+	-Wno-error=unused-parameter \
+	--specs=nosys.specs
 
 # Configure respective board flash type
 # Add hal/flexspi_nor_flash.h or hal/flexspi_hyper_flash.h respectively
@@ -439,6 +441,18 @@ CFLAGS += $(CFLAGS_EXTRA)
 
 MPY_CROSS_FLAGS += -march=armv7m
 
+# Flags for optional C++ source code
+CXXFLAGS += $(filter-out -std=c99,$(CFLAGS))
+
+# TODO make this common -- shouldn't be using these "private" vars from py.mk
+ifneq ($(SRC_CXX)$(SRC_USERMOD_CXX)$(SRC_USERMOD_LIB_CXX),)
+LIBSTDCPP_FILE_NAME = "$(shell $(CXX) $(CXXFLAGS) -print-file-name=libstdc++.a)"
+LDFLAGS += -L"$(shell dirname $(LIBSTDCPP_FILE_NAME))"
+LIBSTDC_FILE_NAME = "$(shell $(CXX) $(CXXFLAGS) -print-file-name=libc.a)"
+LDFLAGS +=  -L"$(shell dirname $(LIBSTDC_FILE_NAME))" 
+LIBS += -lstdc++ $(LIBSTDC_FILE_NAME) 
+endif
+
 # =============================================================================
 # Linker Flags
 # =============================================================================
@@ -470,7 +484,7 @@ endif
 # Library and Object files
 # =============================================================================
 
-LIBS = $(shell $(CC) $(CFLAGS) -print-libgcc-file-name)
+LIBS += $(shell $(CC) $(CFLAGS) -print-libgcc-file-name)
 
 OBJ += $(PY_O)
 OBJ += $(addprefix $(BUILD)/, $(LIBM_SRC_C:.c=.o))

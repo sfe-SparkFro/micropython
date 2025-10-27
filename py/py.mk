@@ -58,6 +58,12 @@ $(foreach module, $(wildcard $(USER_C_MODULES)/*/micropython.mk), \
 	$(eval include $(module))\
 )
 
+$(foreach module, $(wildcard $(USER_C_MODULES)/*/*/*/micropython.mk), \
+    $(eval USERMOD_DIR = $(patsubst %/,%,$(dir $(module))))\
+    $(info Including User C Module from $(USERMOD_DIR))\
+	$(eval include $(module))\
+)
+
 SRC_USERMOD_C += $(SRC_USERMOD)
 
 SRC_USERMOD_PATHFIX_C += $(patsubst $(USER_C_MODULES)/%.c,%.c,$(SRC_USERMOD_C))
