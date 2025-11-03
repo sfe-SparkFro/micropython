@@ -106,7 +106,7 @@ SECTIONS
     *(.eh_frame)
     KEEP (*(.init))
     KEEP (*(.fini))
-    *(.text*)
+    *eh_aux_runtime.o(.text*)
     . = ALIGN(4);
   } > m_text
 
